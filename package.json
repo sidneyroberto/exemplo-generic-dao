@@ -1,0 +1,25 @@
+{
+  "name": "exemplo-generic-dao",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest --watchAll --coverage",
+    "dev": "ts-node src/index.ts"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.2.0",
+    "@types/node": "^18.11.2",
+    "@types/pg": "^8.6.5",
+    "jest": "^29.2.1",
+    "ts-jest": "^29.0.3",
+    "ts-node": "^10.9.1",
+    "tst-reflect-transformer": "^0.12.3",
+    "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "email-validator": "^2.0.4",
+    "pg": "^8.8.0"
+  }
+}
