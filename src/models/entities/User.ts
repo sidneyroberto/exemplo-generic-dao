@@ -1,19 +1,19 @@
 import * as EmailValidator from 'email-validator'
+import { Entity } from '../../decorators/Entity'
 
-import BaseEntity from './BaseEntity'
-import EntityValidationError from '../../errors/EntityValidationError'
-
-export default class User extends BaseEntity {
+import { EntityValidationError } from '../../errors/EntityValidationError'
+@Entity
+export class User {
   private _name: string = ''
   private _email: string = ''
 
   constructor(name: string, email: string) {
-    super()
     this.name = name
     this.email = email
   }
 
   set name(name: string) {
+    console.log(name)
     if (name.length < 10) {
       throw new EntityValidationError(
         'Invalid name: name should have 10 characters at least'

@@ -1,15 +1,11 @@
-import EntityValidationError from '../../errors/EntityValidationError'
-import BaseEntity from './BaseEntity'
+import { Entity } from '../../decorators/Entity'
+import { EntityValidationError } from '../../errors/EntityValidationError'
 
-export default class Post extends BaseEntity {
+@Entity
+export class Post {
   private _title: string = ''
   private _content: string = ''
-
-  constructor(title: string, content: string) {
-    super()
-    this.title = title
-    this.content = content
-  }
+  private _creationDate: Date = new Date()
 
   set title(title: string) {
     if (title.length < 0) {
@@ -23,7 +19,7 @@ export default class Post extends BaseEntity {
   }
 
   set content(content: string) {
-    if (content.length < 50) {
+    if (content.length < 10) {
       throw new EntityValidationError(
         'Content must have at least 50 characteres'
       )
@@ -33,5 +29,16 @@ export default class Post extends BaseEntity {
 
   get content() {
     return this._content
+  }
+
+  set creationDate(creationDate: Date) {
+    if (creationDate > new Date()) {
+      throw new EntityValidationError('Creation date must not be in future')
+    }
+    this._creationDate = creationDate
+  }
+
+  get creationDate() {
+    return this._creationDate
   }
 }

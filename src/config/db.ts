@@ -24,7 +24,7 @@ const createTables = async () => {
   )
 
   sqlClient.query(
-    'create table if not exists "post" (id serial primary key, title varchar not null, content varchar not null)',
+    'create table if not exists "post" (id serial primary key, title varchar not null, content varchar not null, creationDate date not null)',
     (err, _) => {
       if (err) {
         console.log('Error while trying to create table user')

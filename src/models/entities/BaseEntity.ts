@@ -1,3 +1,3 @@
-export default class BaseEntity {
+export class BaseEntity {
   id?: number
 }
