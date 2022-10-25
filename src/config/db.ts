@@ -1,9 +1,9 @@
-import { Client, QueryResult } from 'pg'
+import { Pool, QueryResult } from 'pg'
 import * as dotenv from 'dotenv'
 
 dotenv.config()
 
-export const sqlClient = new Client({
+export const sqlPool = new Pool({
   user: process.env.DB_USER,
   database: process.env.DB,
   host: process.env.HOST,
@@ -11,10 +11,10 @@ export const sqlClient = new Client({
   password: process.env.PASSWORD,
 })
 
-const createTables = async () => {
-  await sqlClient.connect()
-  sqlClient.query(
-    'create table if not exists "user" (id serial primary key, name varchar not null, email varchar not null)',
+export const createTables = async () => {
+  console.log('Creating tables...')
+  sqlPool.query(
+    'create table if not exists "user" ("id" serial primary key, "name" varchar not null, "email" varchar not null)',
     (err, _) => {
       if (err) {
         console.log('Error while trying to create table user')
@@ -23,30 +23,29 @@ const createTables = async () => {
     }
   )
 
-  sqlClient.query(
-    'create table if not exists "post" (id serial primary key, title varchar not null, content varchar not null, creationDate date not null)',
+  sqlPool.query(
+    'create table if not exists "post" ("id" serial primary key, "title" varchar not null, "content" varchar not null, "creationDate" date not null)',
     (err, _) => {
       if (err) {
-        console.log('Error while trying to create table user')
+        console.log('Error while trying to create table post')
         console.log(err)
       }
     }
   )
 }
-createTables()
 
 export const executeQuery = async (
   query: string,
   values?: any[]
 ): Promise<QueryResult<any>> => {
   const result = values
-    ? await sqlClient.query(query, values)
-    : await sqlClient.query(query)
+    ? await sqlPool.query(query, values)
+    : await sqlPool.query(query)
 
   return result
 }
 
-process.on('SIGINT', () => {
-  console.log('Closing db connection')
-  sqlClient.end()
+process.on('SIGINT', async () => {
+  await sqlPool.end()
+  console.log('Connection to db closed')
 })

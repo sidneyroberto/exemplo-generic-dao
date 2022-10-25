@@ -1,44 +1,14 @@
-import { Entity } from '../../decorators/Entity'
-import { EntityValidationError } from '../../errors/EntityValidationError'
+import { BaseEntity } from './BaseEntity'
 
-@Entity
-export class Post {
-  private _title: string = ''
-  private _content: string = ''
-  private _creationDate: Date = new Date()
+export class Post extends BaseEntity {
+  title: string
+  content: string
+  creationDate: Date
 
-  set title(title: string) {
-    if (title.length < 0) {
-      throw new EntityValidationError('Title cannot be empty')
-    }
-    this._title = title
-  }
-
-  get title() {
-    return this._title
-  }
-
-  set content(content: string) {
-    if (content.length < 10) {
-      throw new EntityValidationError(
-        'Content must have at least 50 characteres'
-      )
-    }
-    this._content = content
-  }
-
-  get content() {
-    return this._content
-  }
-
-  set creationDate(creationDate: Date) {
-    if (creationDate > new Date()) {
-      throw new EntityValidationError('Creation date must not be in future')
-    }
-    this._creationDate = creationDate
-  }
-
-  get creationDate() {
-    return this._creationDate
+  constructor(title: string, content: string, creationDate: Date) {
+    super()
+    this.title = title
+    this.content = content
+    this.creationDate = creationDate
   }
 }
